@@ -73,7 +73,7 @@ export class TcpSource extends Source {
           })
           // When closing a socket, indicate there is no more data to be sent,
           // but leave the outgoing stream open to check if more requests are coming.
-          socket.on('finish', e => {
+          socket.on('end', e => {
             console.warn('socket finished', e)
             incoming.push(null)
           })
@@ -92,7 +92,7 @@ export class TcpSource extends Source {
     })
 
     // When there is no more data going to be written, close!
-    outgoing.on('end', () => {
+    outgoing.on('finish', () => {
       socket && socket.end()
     })
 
