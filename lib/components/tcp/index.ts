@@ -6,7 +6,7 @@ import { MessageType } from '../message'
 
 async function safeWrite(socket: Socket, data:Buffer|Uint8Array|string, encoding: any):Promise<any>{
   try {
-    socket.write(data, encoding)
+    await socket.write(data, encoding)
   }
   catch (e) {
     console.warn('message lost during send:', data)
@@ -88,6 +88,7 @@ export class TcpSource extends Source {
           })
         }
         safeWrite(socket, msg.data, encoding)
+          .then(callback)
       },
     })
 
