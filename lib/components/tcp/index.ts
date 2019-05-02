@@ -65,13 +65,10 @@ export class TcpSource extends Source {
           })
 
           socket.on('data', buffer => {
-            try {
-              if (!incoming.push({ data: buffer, type: MessageType.RAW })) {
-                console.warn('TCP Component internal error: not allowed to push more data',)
-              }
-            }
-            catch (e) {
-              console.warn('Error when pushing to readable stream',)
+            if (!incoming.push({ data: buffer, type: MessageType.RAW })) {
+              console.warn(
+                'TCP Component internal error: not allowed to push more data',
+              )
             }
           })
           // When closing a socket, indicate there is no more data to be sent,
@@ -95,7 +92,7 @@ export class TcpSource extends Source {
     })
 
     // When there is no more data going to be written, close!
-    outgoing.on('finish', () => {
+    outgoing.on('end', () => {
       socket && socket.end()
     })
 
