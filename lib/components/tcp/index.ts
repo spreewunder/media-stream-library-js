@@ -4,6 +4,15 @@ import { connect, Socket } from 'net'
 import { parse } from 'url'
 import { MessageType } from '../message'
 
+async function safeWrite(socket: Socket, data:Buffer|Uint8Array|string, encoding: any):Promise<any>{
+  try {
+    socket.write(data, encoding)
+  }
+  catch (e) {
+    console.warn('message lost during send:', data)
+  }
+}
+
 export class TcpSource extends Source {
   /**
    * Create a TCP component.
@@ -78,11 +87,7 @@ export class TcpSource extends Source {
             incoming.push(null)
           })
         }
-        try {
-          socket.write(msg.data, encoding, callback)
-        } catch (e) {
-          console.warn('message lost during send:', msg)
-        }
+        safeWrite(socket, msg.data, encoding)
       },
     })
 
