@@ -92,7 +92,7 @@ export class TcpSource extends Source {
     })
 
     // When there is no more data going to be written, close!
-    outgoing.on('end', () => {
+    outgoing.on('finish', () => {
       socket && socket.end()
     })
 
