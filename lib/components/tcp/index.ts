@@ -33,7 +33,7 @@ export class TcpSource extends Source {
 
     // When an error is sent on the incoming stream, close the socket.
     incoming.on('error', e => {
-      console.log('closing TCP socket due to incoming error', e)
+      console.log('closing TCP socket due to incoming error')
       socket.end()
     })
 
@@ -63,7 +63,7 @@ export class TcpSource extends Source {
             hostname,
           )
           socket.on('error', e => {
-            console.error('TCP socket error:', e)
+            console.error('TCP socket error')
             socket.destroy()
             incoming.push(null)
           })
@@ -94,7 +94,7 @@ export class TcpSource extends Source {
 
     // When an error happens on the outgoing stream, just warn.
     outgoing.on('error', e => {
-      console.warn('error during TCP send, ignoring:', e)
+      console.warn('error during TCP send, ignoring')
     })
 
     // When there is no more data going to be written, close!
